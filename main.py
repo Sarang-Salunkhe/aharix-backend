@@ -32,17 +32,15 @@ politely say:
 I can only help with food ingredients, nutrition, and healthier eating choices."
 """
 
-# Request model
 class ChatRequest(BaseModel):
     message: str
 
-# Response model
 class ChatResponse(BaseModel):
     reply: str
 
 
 @app.get("/")
-def health_check():
+def root():
     return {"status": "Aharix AI backend running"}
 
 
@@ -59,6 +57,6 @@ async def chat(request: ChatRequest):
         ]
     )
 
-    reply = response.output_text
+    reply = response.output_text or "No response from AI."
 
     return ChatResponse(reply=reply)
