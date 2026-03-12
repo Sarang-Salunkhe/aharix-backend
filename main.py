@@ -33,13 +33,10 @@ politely respond:
 class ChatRequest(BaseModel):
     message: str
 
-class ChatResponse(BaseModel):
-    reply: str
-
 
 @app.get("/")
 def root():
-    return {"status": "Ahar AI backend running"}
+    return {"status": "Aharix AI backend running"}
 
 
 @app.post("/chat")
@@ -53,9 +50,7 @@ def chat(request: ChatRequest):
         ]
     )
 
-    return {
-        "reply": response.output_text
-    }
+    return {"reply": response.output_text}
 
 
 @app.post("/analyze-image")
@@ -77,7 +72,7 @@ async def analyze_image(file: UploadFile = File(...)):
                 "content": [
                     {
                         "type": "input_text",
-                        "text": "Analyze the food product in this image and explain ingredients, nutrition, health risks and healthier alternatives."
+                        "text": "What food product is this? Is it healthy?"
                     },
                     {
                         "type": "input_image",
@@ -88,6 +83,7 @@ async def analyze_image(file: UploadFile = File(...)):
         ]
     )
 
-    return {
-        "reply": response.output_text
-    }
+    return {"reply": response.output_text}
+    
+    
+    
