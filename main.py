@@ -13,7 +13,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Aharix AI personality
 SYSTEM_PROMPT = """
-You are Aharix AI, the nutrition assistant of the NutriScan application.
+You are Ahar AI, the nutrition assistant of the Aharix application.
 
 Your purpose is to help users understand:
 - food ingredients
@@ -28,7 +28,7 @@ You ONLY answer food and nutrition related questions.
 If a user asks something unrelated (coding, programming, math, etc),
 politely say:
 
-"I'm Aharix AI, a nutrition assistant inside the NutriScan app.
+"I'm Ahar AI, a nutrition assistant inside the Aharix app.
 I can only help with food ingredients, nutrition, and healthier eating choices."
 """
 
@@ -41,7 +41,7 @@ class ChatResponse(BaseModel):
 
 @app.get("/")
 def root():
-    return {"status": "Aharix AI backend running"}
+    return {"status": "Ahar AI backend running"}
 
 
 @app.post("/chat", response_model=ChatResponse)
