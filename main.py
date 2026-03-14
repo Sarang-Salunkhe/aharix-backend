@@ -11,7 +11,7 @@ app = FastAPI()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-SYSTEM_PROMPT = SYSTEM_PROMPT = """
+SYSTEM_PROMPT = """
 You are **Ahar AI**, the intelligent nutrition assistant inside the **Aharix food analysis application**.
 
 Your purpose is to help users understand food products, ingredients, nutrition labels, and health impacts.
@@ -219,26 +219,39 @@ async def analyze_image(
     base64_image = base64.b64encode(image_bytes).decode("utf-8")
 
     response = client.responses.create(
-        model="gpt-4.1-mini",
-        input=[
-            {
-                "role": "system",
-                "content": SYSTEM_PROMPT
-            },
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "input_text",
-                        "text": message
-                    },
-                    {
-                        "type": "input_image",
-                        "image_url": f"data:image/jpeg;base64,{base64_image}"
-                    }
-                ]
-            }
-        ]
-    )
+    model="gpt-4.1",
+    input=[
+        {
+            "role": "system",
+            "content": SYSTEM_PROMPT
+        },
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "input_text",
+                    "text": f"""
+User question: {message}
+
+Carefully analyze the image.
+
+Steps:
+1. Identify the product name if visible.
+2. Read any text or branding on the package.
+3. Determine the type of food.
+4. Then analyze whether it is healthy.
+
+If the brand name is visible, prioritize that information.
+"""
+                },
+                {
+                    "type": "input_image",
+                    "image_url": f"data:image/jpeg;base64,{base64_image}",
+                    "detail": "high"
+                }
+            ]
+        }
+    ]
+)
 
     return {"reply": response.output_text}
